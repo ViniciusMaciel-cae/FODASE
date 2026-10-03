@@ -17,43 +17,9 @@ A arquitetura avaliada visa empregar Identificação por Radiofrequência (**RFI
 
 * **Classificação dos Transponders:** Tags passivas sem bateria interna, energizadas por indução eletromagnética ou retificação da onda portadora de RF irradiada pelo interrogador.
 
-### 1.2 Princípio de Operação e Cadeia de Dados
-
-```
-+-----------------------------------------------------------------------------------+
-|                            CAMPO FÍSICO / MECÂNICA                                |
-|                                                                                   |
-|  [Transponder MDS D424] --(13,56 MHz / 915 MHz)--> [Antena Integrada IP67]        |
-|  (Pista Móvel Metálica)         Acoplamento RF      (SICK RFU620 / RF200)         |
-+-------------------------------------------------------------|---------------------+
-                                                              | Sinal Bruto / RF
-                                                              v
-+-----------------------------------------------------------------------------------+
-|                        INTERROGAÇÃO E PROCESSAMENTO EMBARCADO                     |
-|                                                                                   |
-|  [Transceptor RF] --> [Demodulador / DSP] --> [Filtro de RSSI / UID Decodificado] |
-+-------------------------------------------------------------|---------------------+
-                                                              | Barramento Industrial
-                                                              v
-+-----------------------------------------------------------------------------------+
-|                        NÍVEL DE CONTROLE E SUPERVISÃO                             |
-|                                                                                   |
-|  [Rede: PROFINET / EtherNet/IP] ------------------------------------------------+ |
-|                                                                                 | |
-|  +-------------------------------------+   +----------------------------------+ | |
-|  | CLP (Controlador Lógico Programável) |   | SCADA / Driver de Posicionamento | | |
-|  | - Mapeamento UID -> Ângulo Base     |   | - Supervisão de Azimute          | | |
-|  | - Sincronização de Eixo             |   | - Histórico e Malha Fechada      | | |
-|  +-------------------------------------+   +----------------------------------+ | |
-+-----------------------------------------------------------------------------------+
-
-```
-
 ### 1.3 Objetivo Inicial do Estudo
 
 Substituir encoders acoplados por atrito ou rodas de medição mecânicas suscetíveis a escorregamento (*slip*), eliminando erros cumulativos de deriva posicional e provendo capacidade de inicialização direta em coordenada absoluta sem necessidade de rotinas demoradas de referenciamento mecânico (*homing*).
-
----
 
 ## 2. Arquitetura de Instalação e Integração
 
@@ -89,10 +55,6 @@ Substituir encoders acoplados por atrito ou rodas de medição mecânicas suscet
 3. O leitor seta o bit de status `Tag_Present` e disponibiliza o UID no buffer de entrada da rede.
 4. O CLP executa a leitura da tabela de dados via bloco de função normalizado e responde com o bit de controle `Acknowledge`.
 
-
-
----
-
 ## 3. Contrapontos Críticos e Análise de Inviabilidade
 
 A implementação do RFID como transdutor exclusivo para medição contínua e discreta a 0,5° é tecnicamente inviável e economicamente proibitiva pelas seguintes razões:
@@ -126,21 +88,6 @@ $$\text{CAPEX}_{\text{Tags}} = 720 \times \text{R\$} 180{,}00 \approx \mathbf{R\
 * **Retorno sobre o Investimento (ROI):** Custo de hardware superior a **R$ 145.000,00** para entregar uma resolução grosseira ($0{,}5^\circ$), quando arquiteturas convencionais com encoder entregam resoluções inferiores a $0{,}01^\circ$ por uma fração mínima deste valor.
 
 ### 3.2 Inviabilidade Mecânica e Física
-
-```
-            SOBREPOSIÇÃO ESPACIAL CRÍTICA (Tags a cada 65 mm)
-            
-            [Tag n-1]      [Tag n]      [Tag n+1]
-              |-- 27mm --|   |-- 27mm --|   |-- 27mm --|
-                 ( O )          ( O )          ( O )
-                    <-- 38mm -->   <-- 38mm -->
-              |========================================|
-              |       Zona de Leitura da Antena        |
-              |            (Largura > 120 mm)          |
-              +----------------------------------------+
-              INRESOLUÇÃO GEOMÉTRICA: Ambas as tags no campo
-
-```
 
 * **Colisão e Sobreposição Espacial Inevitável:**
 * Para tags com diâmetro típico de $27\text{ mm}$, o espaçamento livre entre as bordas de duas tags adjacentes é de apenas:
