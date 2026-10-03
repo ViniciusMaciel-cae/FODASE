@@ -75,7 +75,7 @@ $$\Delta s = \frac{47\text{ m}}{720} \approx 0{,}0653\text{ m} = 65{,}3\text{ mm
 
 * Custo de aquisição apenas das tags:
 
-$$\text{CAPEX}_{\text{Tags}} = 720 \times \text{R\$} 180{,}00 \approx \mathbf{R\$\,129.600{,}00}$$
+$$\text{CAPEX}_{\text{Tags}} = 720 \times \text{R\$} \, 180{,}00 \approx \mathbf{\text{R\$} \, 129.600{,}00}$$
 
 
 
